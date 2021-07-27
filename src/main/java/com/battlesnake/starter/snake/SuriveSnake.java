@@ -83,7 +83,7 @@ public class SuriveSnake extends BattleSnaker{
 			if(mySnakeInfo.getHeading() != null)
 			{
 				if("up".equalsIgnoreCase(mySnakeInfo.getHeading())
-						&& "down".equalsIgnoreCase(mySnakeInfo.getHeading()))
+						|| "down".equalsIgnoreCase(mySnakeInfo.getHeading()))
 				{
 					if(left)
 						return "left";
@@ -109,7 +109,7 @@ public class SuriveSnake extends BattleSnaker{
 					}
 				}
 				if("left".equalsIgnoreCase(mySnakeInfo.getHeading())
-						&& "right".equalsIgnoreCase(mySnakeInfo.getHeading()))
+						|| "right".equalsIgnoreCase(mySnakeInfo.getHeading()))
 				{
 					if(up)
 						return "up";
@@ -177,7 +177,7 @@ public class SuriveSnake extends BattleSnaker{
 		if(mySnakeInfo.getHead() != null && mySnakeInfo.getHead().getY() == boardHeight-1)
 			topEdge = true;
 		//heading to border
-		if("left".equalsIgnoreCase(mySnakeInfo.getHeading()) && "right".equalsIgnoreCase(mySnakeInfo.getHeading()))
+		if("left".equalsIgnoreCase(mySnakeInfo.getHeading()))
 		{
 			if(leftEdge)
 			{
