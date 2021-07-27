@@ -75,7 +75,11 @@ public class SuriveSnake extends BattleSnaker{
 				down = true;
 			else if(mySnakeInfo.getHead().getY() < cloestFood.getY())
 				up = true;
-				
+
+	        LOG.info("findTheCloestFood left " + left);
+	        LOG.info("findTheCloestFood right " + right);
+	        LOG.info("findTheCloestFood down " + down);
+	        LOG.info("findTheCloestFood up " + up);
 			if(mySnakeInfo.getHeading() != null)
 			{
 				if("up".equalsIgnoreCase(mySnakeInfo.getHeading())
@@ -164,13 +168,13 @@ public class SuriveSnake extends BattleSnaker{
 		boolean rightEdge = false;
 		boolean topEdge = false;
 		boolean bottomEdge = false;
-		if(mySnakeInfo.getHead() != null && mySnakeInfo.getHead().getX() == 1)
+		if(mySnakeInfo.getHead() != null && mySnakeInfo.getHead().getX() == 0)
 			leftEdge = true;
-		if(mySnakeInfo.getHead() != null && mySnakeInfo.getHead().getX() == boardWidth)
+		if(mySnakeInfo.getHead() != null && mySnakeInfo.getHead().getX() == boardWidth-1)
 			rightEdge = true;
-		if(mySnakeInfo.getHead() != null && mySnakeInfo.getHead().getY() == 1)
+		if(mySnakeInfo.getHead() != null && mySnakeInfo.getHead().getY() == 0)
 			bottomEdge = true;
-		if(mySnakeInfo.getHead() != null && mySnakeInfo.getHead().getY() == boardHeight)
+		if(mySnakeInfo.getHead() != null && mySnakeInfo.getHead().getY() == boardHeight-1)
 			topEdge = true;
 		//heading to border
 		if("left".equalsIgnoreCase(mySnakeInfo.getHeading()) && "right".equalsIgnoreCase(mySnakeInfo.getHeading()))
