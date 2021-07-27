@@ -3,6 +3,9 @@ package com.battlesnake.starter.data;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.fasterxml.jackson.databind.JsonNode;
 
 public class SnakeInfo {
@@ -33,6 +36,7 @@ public class SnakeInfo {
 
 	}
 
+    private static final Logger LOG = LoggerFactory.getLogger(SnakeInfo.class);
 	private String name;
 	private int health;
 	private List<BodyItem> snakeBody;
@@ -62,6 +66,7 @@ public class SnakeInfo {
 				this.length = snakeInfo.get("length").asInt();
 			}
 		} catch (Exception e) {
+	        LOG.info("processFood error ", e.getMessage());
 			e.printStackTrace();
 		}
 	}
