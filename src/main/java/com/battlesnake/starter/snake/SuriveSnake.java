@@ -31,9 +31,9 @@ public class SuriveSnake extends BattleSnaker{
         int boardWidth = moveRequest.get("board").get("width").asInt();
         JsonNode food = moveRequest.get("board").get("food");
         foodContainer.processFood(food);
-        LOG.info("Food", foodContainer.toString());
-        mySnakeInfo.processSnakeInfo(moveRequest.get("board").get("you"));
-        LOG.info("Food", mySnakeInfo.toString());
+        LOG.info("Food " + foodContainer.toString());
+        mySnakeInfo.processSnakeInfo(moveRequest.get("you"));
+        LOG.info("mySnakeInfo" + mySnakeInfo.toString());
         
         String[] possibleMoves = { "up", "down", "left", "right" };
 
