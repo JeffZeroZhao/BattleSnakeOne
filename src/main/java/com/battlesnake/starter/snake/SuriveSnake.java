@@ -66,6 +66,7 @@ public class SuriveSnake extends BattleSnaker{
 		if(foodContainer != null && mySnakeInfo != null && mySnakeInfo.getHead() != null)
 		{
 			Food cloestFood = findTheCloestFood(foodContainer, mySnakeInfo);
+	        LOG.info("findTheCloestFood " + cloestFood);
 			if(mySnakeInfo.getHead().getX() > cloestFood.getX())
 				left = true;
 			else if(mySnakeInfo.getHead().getX() < cloestFood.getX())
