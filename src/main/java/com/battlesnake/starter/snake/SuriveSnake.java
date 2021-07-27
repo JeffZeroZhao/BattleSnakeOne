@@ -38,10 +38,18 @@ public class SuriveSnake extends BattleSnaker{
         
 //        "up", "down", "left", "right"
         String move = inDanger(boardHeight, boardWidth, mySnakeInfo);
+        LOG.info("MOVE inDanger{}", move);
         if(move == null)
+        {
         	move = getFood(foodContainer, mySnakeInfo);
+            LOG.info("MOVE getFood{}", move);
+        }
         if(move == null && mySnakeInfo.getHeading() != null)
+        {
         	move = mySnakeInfo.getHeading();
+            LOG.info("MOVE continue{}", move);
+        }
+        
         LOG.info("MOVE {}", move);
 
         Map<String, String> response = new HashMap<>();
@@ -128,7 +136,7 @@ public class SuriveSnake extends BattleSnaker{
 
 	private Food findTheCloestFood(FoodContainer foodContainer, SnakeInfo mySnakeInfo) {
 		//well actually it is distance square but we are comparing so not a problem
-		int distance = 0;
+		int distance = 10000000;
 		Food cloestFood = null;
 		if(foodContainer != null && mySnakeInfo != null && mySnakeInfo.getHead() != null)
 		{
@@ -139,7 +147,7 @@ public class SuriveSnake extends BattleSnaker{
 					int xDiff = mySnakeInfo.getHead().getX() - food.getX();
 					int yDiff = mySnakeInfo.getHead().getY() - food.getY();
 					int localDistance = (xDiff*xDiff + yDiff*yDiff);
-					if(distance < localDistance)
+					if(distance > localDistance)
 					{
 						distance = localDistance;
 						cloestFood = food;
