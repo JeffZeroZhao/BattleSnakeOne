@@ -12,6 +12,14 @@ public class FoodContainer {
 	private List<Food> foodList = null;
     private static final Logger LOG = LoggerFactory.getLogger(FoodContainer.class);
 
+	public List<Food> getFoodList() {
+		return foodList;
+	}
+
+	public void setFoodList(List<Food> foodList) {
+		this.foodList = foodList;
+	}
+
 	public void processFood(JsonNode foods) {
 		try {
 			foodList = new ArrayList<>();

@@ -44,6 +44,54 @@ public class SnakeInfo {
 	private int length;
 	private String heading;
 
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public int getHealth() {
+		return health;
+	}
+
+	public void setHealth(int health) {
+		this.health = health;
+	}
+
+	public List<BodyItem> getSnakeBody() {
+		return snakeBody;
+	}
+
+	public void setSnakeBody(List<BodyItem> snakeBody) {
+		this.snakeBody = snakeBody;
+	}
+
+	public BodyItem getHead() {
+		return head;
+	}
+
+	public void setHead(BodyItem head) {
+		this.head = head;
+	}
+
+	public int getLength() {
+		return length;
+	}
+
+	public void setLength(int length) {
+		this.length = length;
+	}
+
+	public String getHeading() {
+		return heading;
+	}
+
+	public void setHeading(String heading) {
+		this.heading = heading;
+	}
+
 	public void processSnakeInfo(JsonNode snakeInfo) {
 		snakeBody = new ArrayList<>();
 		try {
