@@ -57,6 +57,7 @@ public class SuriveSnake extends BattleSnaker{
 		return response;
 	}
 
+	//TODO: need to also consider snake position (both me and others)
 	private String getFood(FoodContainer foodContainer, SnakeInfo mySnakeInfo) {
 		//direction snake should go
 		boolean left = false;
@@ -139,6 +140,7 @@ public class SuriveSnake extends BattleSnaker{
 		return null;
 	}
 
+	//TODO: consider heading and snake positions
 	private Food findTheCloestFood(FoodContainer foodContainer, SnakeInfo mySnakeInfo) {
 		//well actually it is distance square but we are comparing so not a problem
 		int distance = 10000000;
@@ -163,6 +165,7 @@ public class SuriveSnake extends BattleSnaker{
 		return cloestFood;
 	}
 
+	//TODO:need to also consider snake position (both me and others)
 	private String inDanger(int boardHeight, int boardWidth, SnakeInfo mySnakeInfo) {
 		boolean leftEdge = false;
 		boolean rightEdge = false;
