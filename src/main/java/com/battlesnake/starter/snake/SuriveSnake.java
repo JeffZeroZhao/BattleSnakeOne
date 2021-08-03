@@ -59,8 +59,6 @@ public class SuriveSnake extends BattleSnaker {
 		Map<String, String> response = new HashMap<>();
 		if(move != null)
 			response.put("move", move.getMove());
-		else
-			response.put("move", "up");
 		return response;
 //        "up", "down", "left", "right"
 //		String move = inDanger(boardHeight, boardWidth, mySnakeInfo);

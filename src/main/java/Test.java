@@ -59,7 +59,7 @@ public class Test {
 		SuriveSnake sn = new SuriveSnake();
 		FoodContainer fc = new FoodContainer();
 		fc.setFoodList(new ArrayList<Location>());
-		fc.getFoodList().add(new Location(3, 1));
+		fc.getFoodList().add(new Location(0, 0));
 		fc.getFoodList().add(new Location(2, 4));
 		Set<Location> connectingDots = new TreeSet<>();
 		Move.connectingDots(6, 6, null, mySnake, mySnake.getSnakeBody().get(1), mySnake.getSnakeBody().get(0), mySnake.getSnakeBody().get(0), connectingDots);
