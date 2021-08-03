@@ -1,9 +1,8 @@
 package com.battlesnake.starter.data;
 
 import java.util.List;
-import java.util.Set;
 
-public class Location implements Comparable {
+public class Location implements Comparable<Location> {
 	private int x;
 	private int y;
 
@@ -103,10 +102,10 @@ public class Location implements Comparable {
 	}
 
 	@Override
-	public int compareTo(Object arg0) {
-		int diff = this.getX() - ((Location) arg0).getX();
+	public int compareTo(Location arg0) {
+		int diff = this.getX() - arg0.getX();
 		if (diff == 0)
-			diff = this.getY() - ((Location) arg0).getY();
+			diff = this.getY() - arg0.getY();
 		return diff;
 	}
 }
