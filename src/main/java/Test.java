@@ -66,7 +66,7 @@ public class Test {
 		System.out.println(connectingDots);
 		Location food = sn.findTheCloestFood(fc, mySnake, connectingDots);
 		System.out.println("food: " + food);
-		Move move = sn.getMove(6, 6, null, mySnake, fc);
+		Move move = sn.getMove(6, 6, null, mySnake, fc, true);
 		System.out.println("move: " + move.getMove());
 		
 		

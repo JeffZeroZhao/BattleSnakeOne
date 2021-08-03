@@ -54,7 +54,7 @@ public class SuriveSnake extends BattleSnaker {
 			}
 		}
 		
-		Move move = getMove(boardHeight, boardWidth, otherSnakes, mySnakeInfo, foodContainer);
+		Move move = getMove(boardHeight, boardWidth, otherSnakes, mySnakeInfo, foodContainer, true);
 
 		Map<String, String> response = new HashMap<>();
 		if(move != null)
@@ -79,7 +79,7 @@ public class SuriveSnake extends BattleSnaker {
 //		return response;
 	}
 
-	public Move getMove(int boardHeight, int boardWidth, List<SnakeInfo> otherSnakes, SnakeInfo mySnake, FoodContainer foodContainer) {
+	public Move getMove(int boardHeight, int boardWidth, List<SnakeInfo> otherSnakes, SnakeInfo mySnake, FoodContainer foodContainer, boolean useTopBottpmRule) {
 		Location head = mySnake.getHead();
 		Move moveUp = new Move();
 		moveUp.setLocation(new Location(head.getX(), head.getY() + 1));
@@ -98,56 +98,32 @@ public class SuriveSnake extends BattleSnaker {
 		moveLeft.setMove("left");
 		
 		List<Move> validMove = new ArrayList<>();
-		if(moveUp.getLocation().isEmpty(boardHeight, boardWidth, otherSnakes, mySnake, true))
+		if(moveUp.getLocation().isEmpty(boardHeight, boardWidth, otherSnakes, mySnake, useTopBottpmRule))
 		{
 			moveUp.setConnectedDots(Move.connectingDots(boardHeight, boardWidth, otherSnakes, mySnake, head, moveUp.getLocation(), moveUp.getLocation(), new HashSet<>()));
 			validMove.add(moveUp);	
 		}
-		if(moveDown.getLocation().isEmpty(boardHeight, boardWidth, otherSnakes, mySnake, true))
+		if(moveDown.getLocation().isEmpty(boardHeight, boardWidth, otherSnakes, mySnake, useTopBottpmRule))
 		{
 			moveDown.setConnectedDots(Move.connectingDots(boardHeight, boardWidth, otherSnakes, mySnake, head, moveDown.getLocation(), moveDown.getLocation(), new HashSet<>()));
 			validMove.add(moveDown);	
 		}
-		if(moveRight.getLocation().isEmpty(boardHeight, boardWidth, otherSnakes, mySnake, true))
+		if(moveRight.getLocation().isEmpty(boardHeight, boardWidth, otherSnakes, mySnake, useTopBottpmRule))
 		{
 			moveRight.setConnectedDots(Move.connectingDots(boardHeight, boardWidth, otherSnakes, mySnake, head, moveRight.getLocation(), moveRight.getLocation(), new HashSet<>()));
 			validMove.add(moveRight);	
 		}
-		if(moveLeft.getLocation().isEmpty(boardHeight, boardWidth, otherSnakes, mySnake, true))
+		if(moveLeft.getLocation().isEmpty(boardHeight, boardWidth, otherSnakes, mySnake, useTopBottpmRule))
 		{
 			moveLeft.setConnectedDots(Move.connectingDots(boardHeight, boardWidth, otherSnakes, mySnake, head, moveLeft.getLocation(), moveLeft.getLocation(), new HashSet<>()));
 			validMove.add(moveLeft);	
 		}
 		
 		//ok fine at this point frogot the top bottom rule and give it another try
-		if(validMove.size() == 0)
-		{
-			if(moveUp.getLocation().isEmpty(boardHeight, boardWidth, otherSnakes, mySnake, false))
-			{
-				moveUp.setConnectedDots(Move.connectingDots(boardHeight, boardWidth, otherSnakes, mySnake, head, moveUp.getLocation(), moveUp.getLocation(), new HashSet<>()));
-				validMove.add(moveUp);	
-			}
-			if(moveDown.getLocation().isEmpty(boardHeight, boardWidth, otherSnakes, mySnake, false))
-			{
-				moveDown.setConnectedDots(Move.connectingDots(boardHeight, boardWidth, otherSnakes, mySnake, head, moveDown.getLocation(), moveDown.getLocation(), new HashSet<>()));
-				validMove.add(moveDown);	
-			}
-			if(moveRight.getLocation().isEmpty(boardHeight, boardWidth, otherSnakes, mySnake, false))
-			{
-				moveRight.setConnectedDots(Move.connectingDots(boardHeight, boardWidth, otherSnakes, mySnake, head, moveRight.getLocation(), moveRight.getLocation(), new HashSet<>()));
-				validMove.add(moveRight);	
-			}
-			if(moveLeft.getLocation().isEmpty(boardHeight, boardWidth, otherSnakes, mySnake, false))
-			{
-				moveLeft.setConnectedDots(Move.connectingDots(boardHeight, boardWidth, otherSnakes, mySnake, head, moveLeft.getLocation(), moveLeft.getLocation(), new HashSet<>()));
-				validMove.add(moveLeft);	
-			}
-		}
-
-		if(validMove.size() == 0)
+		if(validMove.size() == 0 && useTopBottpmRule)
 		{
 			LOG.info("Shit!!! I am trapped!");
-			return null;	
+			return getMove(boardHeight, boardWidth, otherSnakes, mySnake, foodContainer, false);	
 		}
 		if(validMove.size() == 1)
 		{
@@ -165,6 +141,8 @@ public class SuriveSnake extends BattleSnaker {
 				if(move.getConnectedDots() >= mySnake.getLength() * 2)
 					goodMove.add(move);
 			}
+			if(safestMove.getConnectedDots() < mySnake.getLength() * 1.5)
+				return getMove(boardHeight, boardWidth, otherSnakes, mySnake, foodContainer, false);	
 			if(goodMove.size() == 0)
 			{
 				return safestMove;
