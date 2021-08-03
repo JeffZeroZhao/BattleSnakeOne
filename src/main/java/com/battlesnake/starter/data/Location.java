@@ -44,6 +44,9 @@ public class Location implements Comparable{
 	public boolean isEmpty(int boardHeight, int boardWidth, List<SnakeInfo> otherSnakes, SnakeInfo mySnake) {
 		if (this.x < 0 || this.x >= boardWidth || this.y < 0 || this.y >= boardHeight)
 			return false;
+		//if x not left most and right most line, avoid bottom and top
+		if(this.x > 0 && this.x < boardWidth -1 && (this.y == 0 || this.y == boardHeight - 1))
+			return false;
 
 		if (mySnake.getSnakeBody() != null) {
 			// last of my body will be removed when I move forward, so skip the last one
