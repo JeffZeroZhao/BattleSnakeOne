@@ -134,7 +134,10 @@ public class SuriveSnake extends BattleSnaker {
 			}
 		}
 		if (validMove.size() == 1) {
-			return validMove.get(0);
+			if(useTopBottpmRule)
+				return getMove(boardHeight, boardWidth, otherSnakes, mySnake, foodContainer, false);
+			else
+				return validMove.get(0);
 		} else {
 			Move safestMove = new Move();
 			safestMove.setConnectedDots(-1);
