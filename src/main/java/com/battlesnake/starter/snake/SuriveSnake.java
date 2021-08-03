@@ -57,7 +57,10 @@ public class SuriveSnake extends BattleSnaker {
 		Move move = getMove(boardHeight, boardWidth, otherSnakes, mySnakeInfo, foodContainer);
 
 		Map<String, String> response = new HashMap<>();
-		response.put("move", move.getMove());
+		if(move != null)
+			response.put("move", move.getMove());
+		else
+			response.put("move", "up");
 		return response;
 //        "up", "down", "left", "right"
 //		String move = inDanger(boardHeight, boardWidth, mySnakeInfo);
@@ -141,13 +144,14 @@ public class SuriveSnake extends BattleSnaker {
 				moveLeft.setConnectedDots(Move.connectingDots(boardHeight, boardWidth, otherSnakes, mySnake, head, moveLeft.getLocation(), moveLeft.getLocation(), new HashSet<>()));
 				validMove.add(moveLeft);	
 			}
-			if(validMove.size() == 0)
-			{
-				LOG.info("Shit!!! I am trapped!");
-				return null;	
-			}
 		}
-		else if(validMove.size() == 1)
+
+		if(validMove.size() == 0)
+		{
+			LOG.info("Shit!!! I am trapped!");
+			return null;	
+		}
+		if(validMove.size() == 1)
 		{
 			return validMove.get(0);
 		}
