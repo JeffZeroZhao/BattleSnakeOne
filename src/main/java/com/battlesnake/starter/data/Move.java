@@ -41,7 +41,7 @@ public class Move {
 		Location up = new Location(current.getX(), current.getY() + 1);
 		Location down = new Location(current.getX(), current.getY() - 1);
 		if (!left.equals(from) && !left.equals(start)) {
-			if (left.isEmpty(boardHeight, boardWidth, otherSnakes, mySnake)) {
+			if (left.isEmpty(boardHeight, boardWidth, otherSnakes, mySnake, false)) {
 				if (!connectedLocation.contains(left)) {
 					connectedLocation.add(left);
 					connectionPoints = connectionPoints + 1;
@@ -51,7 +51,7 @@ public class Move {
 			}
 		}
 		if (!right.equals(from) && !right.equals(start)) {
-			if (right.isEmpty(boardHeight, boardWidth, otherSnakes, mySnake)) {
+			if (right.isEmpty(boardHeight, boardWidth, otherSnakes, mySnake, false)) {
 				if (!connectedLocation.contains(right)) {
 					connectedLocation.add(right);
 					connectionPoints = connectionPoints + 1;
@@ -61,7 +61,7 @@ public class Move {
 			}
 		}
 		if (!up.equals(from) && !up.equals(start)) {
-			if (up.isEmpty(boardHeight, boardWidth, otherSnakes, mySnake)) {
+			if (up.isEmpty(boardHeight, boardWidth, otherSnakes, mySnake, false)) {
 				if (!connectedLocation.contains(up)) {
 					connectedLocation.add(up);
 					connectionPoints = connectionPoints + 1;
@@ -71,7 +71,7 @@ public class Move {
 			}
 		}
 		if (!down.equals(from) && !down.equals(start)) {
-			if (down.isEmpty(boardHeight, boardWidth, otherSnakes, mySnake)) {
+			if (down.isEmpty(boardHeight, boardWidth, otherSnakes, mySnake, false)) {
 				if (!connectedLocation.contains(down)) {
 					connectedLocation.add(down);
 					connectionPoints = connectionPoints + 1;

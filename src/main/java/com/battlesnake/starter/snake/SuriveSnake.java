@@ -97,7 +97,7 @@ public class SuriveSnake extends BattleSnaker {
 		moveLeft.setMove("left");
 		
 		List<Move> validMove = new ArrayList<>();
-		if(moveUp.getLocation().isEmpty(boardHeight, boardWidth, otherSnakes, mySnake))
+		if(moveUp.getLocation().isEmpty(boardHeight, boardWidth, otherSnakes, mySnake, true))
 		{
 			moveUp.setConnectedDots(Move.connectingDots(boardHeight, boardWidth, otherSnakes, mySnake, head, moveUp.getLocation(), moveUp.getLocation(), new HashSet<>()));
 			validMove.add(moveUp);	
