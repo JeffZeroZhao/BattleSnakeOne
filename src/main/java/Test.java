@@ -4,9 +4,11 @@ import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 
+import com.battlesnake.starter.data.FoodContainer;
 import com.battlesnake.starter.data.Location;
 import com.battlesnake.starter.data.Move;
 import com.battlesnake.starter.data.SnakeInfo;
+import com.battlesnake.starter.snake.SuriveSnake;
 
 public class Test {
 
@@ -37,6 +39,16 @@ public class Test {
 		System.out.println(
 				a.connectingDots(6, 6, null, mySnake, mySnake.getHead(), new Location(3, 0), new Location(3, 0), store));
 		System.out.println(store);
+		
+		SuriveSnake sn = new SuriveSnake();
+		FoodContainer fc = new FoodContainer();
+		fc.setFoodList(new ArrayList<Location>());
+		fc.getFoodList().add(new Location(1, 2));
+		fc.getFoodList().add(new Location(2, 4));
+		Location food = sn.findTheCloestFood(fc, mySnake);
+		System.out.println("food: " + food);
+		Move move = sn.getMove(6, 6, null, mySnake, fc);
+		System.out.println("move: " + move.getMove());
 	}
 
 }

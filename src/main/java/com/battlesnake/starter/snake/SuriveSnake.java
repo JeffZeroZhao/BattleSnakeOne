@@ -5,6 +5,8 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -39,102 +41,11 @@ public class SuriveSnake extends BattleSnaker {
 		mySnakeInfo.processSnakeInfo(moveRequest.get("you"));
 		LOG.info("mySnakeInfo" + mySnakeInfo.toString());
 
-		Location head = mySnakeInfo.getHead();
-		Move moveUp = new Move();
-		moveUp.setLocation(new Location(head.getX(), head.getY() + 1));
-		moveUp.setMove("up");
-		
-		Move moveDown = new Move();
-		moveDown.setLocation(new Location(head.getX(), head.getY()- 1));
-		moveDown.setMove("down");
-		
-		Move moveRight = new Move();
-		moveRight.setLocation(new Location(head.getX() + 1, head.getY()));
-		moveRight.setMove("right");
-		
-		Move moveLeft = new Move();
-		moveLeft.setLocation(new Location(head.getX() -1, head.getY()));
-		moveLeft.setMove("left");
-		
-		List<Move> validMove = new ArrayList<>();
-		if(moveUp.getLocation().isEmpty(boardHeight, boardWidth, null, mySnakeInfo))
-		{
-			moveUp.setConnectedDots(moveUp.connectingDots(boardHeight, boardWidth, null, mySnakeInfo, head, moveUp.getLocation(), moveUp.getLocation(), new HashSet<>()));
-			validMove.add(moveUp);	
-		}
-		if(moveDown.getLocation().isEmpty(boardHeight, boardWidth, null, mySnakeInfo))
-		{
-			moveDown.setConnectedDots(moveUp.connectingDots(boardHeight, boardWidth, null, mySnakeInfo, head, moveDown.getLocation(), moveDown.getLocation(), new HashSet<>()));
-			validMove.add(moveDown);	
-		}
-		if(moveRight.getLocation().isEmpty(boardHeight, boardWidth, null, mySnakeInfo))
-		{
-			moveRight.setConnectedDots(moveUp.connectingDots(boardHeight, boardWidth, null, mySnakeInfo, head, moveRight.getLocation(), moveRight.getLocation(), new HashSet<>()));
-			validMove.add(moveRight);	
-		}
-		if(moveLeft.getLocation().isEmpty(boardHeight, boardWidth, null, mySnakeInfo))
-		{
-			moveLeft.setConnectedDots(moveUp.connectingDots(boardHeight, boardWidth, null, mySnakeInfo, head, moveLeft.getLocation(), moveLeft.getLocation(), new HashSet<>()));
-			validMove.add(moveLeft);	
-		}
-		
-		if(validMove.size() == 0)
-		{
-			LOG.info("Shit!!! I am trapped!");
-			Map<String, String> response = new HashMap<>();
-			response.put("move", "up");
-			return response;
-		}
-		else if(validMove.size() == 1)
-		{
-			Map<String, String> response = new HashMap<>();
-			response.put("move", validMove.get(0).getMove());
-			return response;
-		}
-		else
-		{
-			Move safestMove = new Move();
-			safestMove.setConnectedDots(-1);
-			List<Move> goodMove = new ArrayList<>();
-			for(Move move : validMove)
-			{
-				if(move.getConnectedDots() > safestMove.getConnectedDots())
-					safestMove = move;
-				if(move.getConnectedDots() >= mySnakeInfo.getLength() * 2)
-					goodMove.add(move);
-			}
-			if(goodMove.size() == 0)
-			{
-				Map<String, String> response = new HashMap<>();
-				response.put("move", safestMove.getMove());
-				return response;
-			}
-			else if(goodMove.size() == 1)
-			{
-				Map<String, String> response = new HashMap<>();
-				response.put("move", goodMove.get(0).getMove());
-				return response;
-			}
-			else
-			{
-				Location cloestFood = findTheCloestFood(foodContainer, mySnakeInfo);
-				Move closerToFood = null;
-				int distance = -1;
-				for(Move move : goodMove)
-				{
-					int d = getDistance(move.getLocation(), cloestFood);
-					if(distance == -1 || distance > d)
-					{
-						closerToFood = move;
-						distance = d;
-					}
-				}
-				Map<String, String> response = new HashMap<>();
-				response.put("move", closerToFood.getMove());
-				return response;
-			}
-		}
-			
+		Move move = getMove(boardHeight, boardWidth, null, mySnakeInfo, foodContainer);
+
+		Map<String, String> response = new HashMap<>();
+		response.put("move", move.getMove());
+		return response;
 //        "up", "down", "left", "right"
 //		String move = inDanger(boardHeight, boardWidth, mySnakeInfo);
 //		LOG.info("MOVE inDanger{}", move);
@@ -154,11 +65,100 @@ public class SuriveSnake extends BattleSnaker {
 //		return response;
 	}
 
-	private int getDistance(Location location, Location cloestFood) {
+	public Move getMove(int boardHeight, int boardWidth, List<SnakeInfo> otherSnakes, SnakeInfo mySnake, FoodContainer foodContainer) {
+		Location head = mySnake.getHead();
+		Move moveUp = new Move();
+		moveUp.setLocation(new Location(head.getX(), head.getY() + 1));
+		moveUp.setMove("up");
+		
+		Move moveDown = new Move();
+		moveDown.setLocation(new Location(head.getX(), head.getY()- 1));
+		moveDown.setMove("down");
+		
+		Move moveRight = new Move();
+		moveRight.setLocation(new Location(head.getX() + 1, head.getY()));
+		moveRight.setMove("right");
+		
+		Move moveLeft = new Move();
+		moveLeft.setLocation(new Location(head.getX() -1, head.getY()));
+		moveLeft.setMove("left");
+		
+		List<Move> validMove = new ArrayList<>();
+		if(moveUp.getLocation().isEmpty(boardHeight, boardWidth, null, mySnake))
+		{
+			moveUp.setConnectedDots(moveUp.connectingDots(boardHeight, boardWidth, null, mySnake, head, moveUp.getLocation(), moveUp.getLocation(), new HashSet<>()));
+			validMove.add(moveUp);	
+		}
+		if(moveDown.getLocation().isEmpty(boardHeight, boardWidth, null, mySnake))
+		{
+			moveDown.setConnectedDots(moveUp.connectingDots(boardHeight, boardWidth, null, mySnake, head, moveDown.getLocation(), moveDown.getLocation(), new HashSet<>()));
+			validMove.add(moveDown);	
+		}
+		if(moveRight.getLocation().isEmpty(boardHeight, boardWidth, null, mySnake))
+		{
+			moveRight.setConnectedDots(moveUp.connectingDots(boardHeight, boardWidth, null, mySnake, head, moveRight.getLocation(), moveRight.getLocation(), new HashSet<>()));
+			validMove.add(moveRight);	
+		}
+		if(moveLeft.getLocation().isEmpty(boardHeight, boardWidth, null, mySnake))
+		{
+			moveLeft.setConnectedDots(moveUp.connectingDots(boardHeight, boardWidth, null, mySnake, head, moveLeft.getLocation(), moveLeft.getLocation(), new HashSet<>()));
+			validMove.add(moveLeft);	
+		}
+		
+		if(validMove.size() == 0)
+		{
+			LOG.info("Shit!!! I am trapped!");
+			return null;
+		}
+		else if(validMove.size() == 1)
+		{
+			return validMove.get(0);
+		}
+		else
+		{
+			Move safestMove = new Move();
+			safestMove.setConnectedDots(-1);
+			List<Move> goodMove = new ArrayList<>();
+			for(Move move : validMove)
+			{
+				if(move.getConnectedDots() > safestMove.getConnectedDots())
+					safestMove = move;
+				if(move.getConnectedDots() >= mySnake.getLength() * 2)
+					goodMove.add(move);
+			}
+			if(goodMove.size() == 0)
+			{
+				return safestMove;
+			}
+			else if(goodMove.size() == 1)
+			{
+				return goodMove.get(0);
+			}
+			else
+			{
+				// need change!!!!
+				Location cloestFood = findTheCloestFood(foodContainer, mySnake);
+				Move closerToFood = null;
+				int distance = -1;
+				for(Move move : goodMove)
+				{
+					int d = getDistance(move.getLocation(), cloestFood);
+					if(distance == -1 || distance > d)
+					{
+						closerToFood = move;
+						distance = d;
+					}
+				}
+				return closerToFood;
+			}
+		}
+	}
 
-		int xDiff = mySnakeInfo.getHead().getX() - cloestFood.getX();
-		int yDiff = mySnakeInfo.getHead().getY() - cloestFood.getY();
-		int localDistance = (xDiff * xDiff + yDiff * yDiff);
+	public int getDistance(Location location, Location cloestFood) {
+
+		int xDiff = location.getX() - cloestFood.getX();
+		int yDiff = location.getY() - cloestFood.getY();
+		int localDistance = Math.abs(xDiff) + Math.abs(yDiff);
 		return localDistance;
 	}
 
@@ -238,7 +238,7 @@ public class SuriveSnake extends BattleSnaker {
 //	}
 
 	// TODO: consider heading and snake positions
-	private Location findTheCloestFood(FoodContainer foodContainer, SnakeInfo mySnakeInfo) {
+	public Location findTheCloestFood(FoodContainer foodContainer, SnakeInfo mySnakeInfo) {
 		// well actually it is distance square but we are comparing so not a problem
 		int distance = 10000000;
 		Location cloestFood = null;
@@ -259,55 +259,55 @@ public class SuriveSnake extends BattleSnaker {
 	}
 
 	// TODO:need to also consider snake position (both me and others)
-	private String inDanger(int boardHeight, int boardWidth, SnakeInfo mySnakeInfo) {
-		boolean leftEdge = false;
-		boolean rightEdge = false;
-		boolean topEdge = false;
-		boolean bottomEdge = false;
-		if (mySnakeInfo.getHead() != null && mySnakeInfo.getHead().getX() == 0)
-			leftEdge = true;
-		if (mySnakeInfo.getHead() != null && mySnakeInfo.getHead().getX() == boardWidth - 1)
-			rightEdge = true;
-		if (mySnakeInfo.getHead() != null && mySnakeInfo.getHead().getY() == 0)
-			bottomEdge = true;
-		if (mySnakeInfo.getHead() != null && mySnakeInfo.getHead().getY() == boardHeight - 1)
-			topEdge = true;
-		// heading to border
-		if ("left".equalsIgnoreCase(mySnakeInfo.getHeading())) {
-			if (leftEdge) {
-				if (topEdge)
-					return "down";
-				if (bottomEdge)
-					return "up";
-			}
-		} else if ("right".equalsIgnoreCase(mySnakeInfo.getHeading())) {
-			if (rightEdge) {
-				if (topEdge)
-					return "down";
-				if (bottomEdge)
-					return "up";
-			}
-		}
-		// TODO: here we need method to find up or down
-
-		if ("up".equalsIgnoreCase(mySnakeInfo.getHeading())) {
-			if (topEdge) {
-				if (leftEdge)
-					return "right";
-				if (rightEdge)
-					return "left";
-			}
-		} else if ("down".equalsIgnoreCase(mySnakeInfo.getHeading())) {
-			if (bottomEdge) {
-				if (leftEdge)
-					return "right";
-				if (rightEdge)
-					return "left";
-			}
-		}
-		// TODO: here we need method to find left or right
-		return null;
-
-	}
+//	private String inDanger(int boardHeight, int boardWidth, SnakeInfo mySnakeInfo) {
+//		boolean leftEdge = false;
+//		boolean rightEdge = false;
+//		boolean topEdge = false;
+//		boolean bottomEdge = false;
+//		if (mySnakeInfo.getHead() != null && mySnakeInfo.getHead().getX() == 0)
+//			leftEdge = true;
+//		if (mySnakeInfo.getHead() != null && mySnakeInfo.getHead().getX() == boardWidth - 1)
+//			rightEdge = true;
+//		if (mySnakeInfo.getHead() != null && mySnakeInfo.getHead().getY() == 0)
+//			bottomEdge = true;
+//		if (mySnakeInfo.getHead() != null && mySnakeInfo.getHead().getY() == boardHeight - 1)
+//			topEdge = true;
+//		// heading to border
+//		if ("left".equalsIgnoreCase(mySnakeInfo.getHeading())) {
+//			if (leftEdge) {
+//				if (topEdge)
+//					return "down";
+//				if (bottomEdge)
+//					return "up";
+//			}
+//		} else if ("right".equalsIgnoreCase(mySnakeInfo.getHeading())) {
+//			if (rightEdge) {
+//				if (topEdge)
+//					return "down";
+//				if (bottomEdge)
+//					return "up";
+//			}
+//		}
+//		// TODO: here we need method to find up or down
+//
+//		if ("up".equalsIgnoreCase(mySnakeInfo.getHeading())) {
+//			if (topEdge) {
+//				if (leftEdge)
+//					return "right";
+//				if (rightEdge)
+//					return "left";
+//			}
+//		} else if ("down".equalsIgnoreCase(mySnakeInfo.getHeading())) {
+//			if (bottomEdge) {
+//				if (leftEdge)
+//					return "right";
+//				if (rightEdge)
+//					return "left";
+//			}
+//		}
+//		// TODO: here we need method to find left or right
+//		return null;
+//
+//	}
 
 }
