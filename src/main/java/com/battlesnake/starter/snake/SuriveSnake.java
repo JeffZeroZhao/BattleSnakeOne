@@ -102,17 +102,17 @@ public class SuriveSnake extends BattleSnaker {
 			moveUp.setConnectedDots(Move.connectingDots(boardHeight, boardWidth, otherSnakes, mySnake, head, moveUp.getLocation(), moveUp.getLocation(), new HashSet<>()));
 			validMove.add(moveUp);	
 		}
-		if(moveDown.getLocation().isEmpty(boardHeight, boardWidth, otherSnakes, mySnake))
+		if(moveDown.getLocation().isEmpty(boardHeight, boardWidth, otherSnakes, mySnake, true))
 		{
 			moveDown.setConnectedDots(Move.connectingDots(boardHeight, boardWidth, otherSnakes, mySnake, head, moveDown.getLocation(), moveDown.getLocation(), new HashSet<>()));
 			validMove.add(moveDown);	
 		}
-		if(moveRight.getLocation().isEmpty(boardHeight, boardWidth, otherSnakes, mySnake))
+		if(moveRight.getLocation().isEmpty(boardHeight, boardWidth, otherSnakes, mySnake, true))
 		{
 			moveRight.setConnectedDots(Move.connectingDots(boardHeight, boardWidth, otherSnakes, mySnake, head, moveRight.getLocation(), moveRight.getLocation(), new HashSet<>()));
 			validMove.add(moveRight);	
 		}
-		if(moveLeft.getLocation().isEmpty(boardHeight, boardWidth, otherSnakes, mySnake))
+		if(moveLeft.getLocation().isEmpty(boardHeight, boardWidth, otherSnakes, mySnake, true))
 		{
 			moveLeft.setConnectedDots(Move.connectingDots(boardHeight, boardWidth, otherSnakes, mySnake, head, moveLeft.getLocation(), moveLeft.getLocation(), new HashSet<>()));
 			validMove.add(moveLeft);	

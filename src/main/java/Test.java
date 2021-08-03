@@ -71,7 +71,7 @@ public class Test {
 		
 		
 		Location l = new Location(5,5);
-		System.out.println("isEmpty: " + l.isEmpty(6, 6, null, mySnake));
+		System.out.println("isEmpty: " + l.isEmpty(6, 6, null, mySnake, true));
 	}
 
 }
