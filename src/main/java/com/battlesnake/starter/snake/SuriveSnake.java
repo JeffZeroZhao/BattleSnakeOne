@@ -23,6 +23,7 @@ public class SuriveSnake extends BattleSnaker {
 	private static final ObjectMapper JSON_MAPPER = new ObjectMapper();
 	private FoodContainer foodContainer = new FoodContainer();
 	private SnakeInfo mySnakeInfo = new SnakeInfo();
+	private List<SnakeInfo> otherSnakes = new ArrayList<>();
 
 	@Override
 	public Map<String, String> move(JsonNode moveRequest) {
@@ -40,8 +41,20 @@ public class SuriveSnake extends BattleSnaker {
 		LOG.info("Food " + foodContainer.toString());
 		mySnakeInfo.processSnakeInfo(moveRequest.get("you"));
 		LOG.info("mySnakeInfo" + mySnakeInfo.toString());
-
-		Move move = getMove(boardHeight, boardWidth, null, mySnakeInfo, foodContainer);
+		JsonNode snakesArray = moveRequest.get("board").get("snakes");
+		if(snakesArray != null)
+		{
+			for(int i = 0; i < snakesArray.size(); i++)
+			{
+				JsonNode snake = snakesArray.get(i);
+				SnakeInfo s = new SnakeInfo();
+				s.processSnakeInfo(snake);
+				if(s.getId() != null && !s.getId().equalsIgnoreCase(mySnakeInfo.getId()))
+					otherSnakes.add(s);
+			}
+		}
+		
+		Move move = getMove(boardHeight, boardWidth, otherSnakes, mySnakeInfo, foodContainer);
 
 		Map<String, String> response = new HashMap<>();
 		response.put("move", move.getMove());
@@ -84,24 +97,24 @@ public class SuriveSnake extends BattleSnaker {
 		moveLeft.setMove("left");
 		
 		List<Move> validMove = new ArrayList<>();
-		if(moveUp.getLocation().isEmpty(boardHeight, boardWidth, null, mySnake))
+		if(moveUp.getLocation().isEmpty(boardHeight, boardWidth, otherSnakes, mySnake))
 		{
-			moveUp.setConnectedDots(moveUp.connectingDots(boardHeight, boardWidth, null, mySnake, head, moveUp.getLocation(), moveUp.getLocation(), new HashSet<>()));
+			moveUp.setConnectedDots(Move.connectingDots(boardHeight, boardWidth, otherSnakes, mySnake, head, moveUp.getLocation(), moveUp.getLocation(), new HashSet<>()));
 			validMove.add(moveUp);	
 		}
-		if(moveDown.getLocation().isEmpty(boardHeight, boardWidth, null, mySnake))
+		if(moveDown.getLocation().isEmpty(boardHeight, boardWidth, otherSnakes, mySnake))
 		{
-			moveDown.setConnectedDots(moveUp.connectingDots(boardHeight, boardWidth, null, mySnake, head, moveDown.getLocation(), moveDown.getLocation(), new HashSet<>()));
+			moveDown.setConnectedDots(Move.connectingDots(boardHeight, boardWidth, otherSnakes, mySnake, head, moveDown.getLocation(), moveDown.getLocation(), new HashSet<>()));
 			validMove.add(moveDown);	
 		}
-		if(moveRight.getLocation().isEmpty(boardHeight, boardWidth, null, mySnake))
+		if(moveRight.getLocation().isEmpty(boardHeight, boardWidth, otherSnakes, mySnake))
 		{
-			moveRight.setConnectedDots(moveUp.connectingDots(boardHeight, boardWidth, null, mySnake, head, moveRight.getLocation(), moveRight.getLocation(), new HashSet<>()));
+			moveRight.setConnectedDots(Move.connectingDots(boardHeight, boardWidth, otherSnakes, mySnake, head, moveRight.getLocation(), moveRight.getLocation(), new HashSet<>()));
 			validMove.add(moveRight);	
 		}
-		if(moveLeft.getLocation().isEmpty(boardHeight, boardWidth, null, mySnake))
+		if(moveLeft.getLocation().isEmpty(boardHeight, boardWidth, otherSnakes, mySnake))
 		{
-			moveLeft.setConnectedDots(moveUp.connectingDots(boardHeight, boardWidth, null, mySnake, head, moveLeft.getLocation(), moveLeft.getLocation(), new HashSet<>()));
+			moveLeft.setConnectedDots(Move.connectingDots(boardHeight, boardWidth, otherSnakes, mySnake, head, moveLeft.getLocation(), moveLeft.getLocation(), new HashSet<>()));
 			validMove.add(moveLeft);	
 		}
 		
@@ -136,10 +149,13 @@ public class SuriveSnake extends BattleSnaker {
 			}
 			else
 			{
-				// need change!!!!
-				Location cloestFood = findTheCloestFood(foodContainer, mySnake);
+				Set<Location> connectingDots = new HashSet<>();
+				Move.connectingDots(boardHeight, boardWidth, otherSnakes, mySnake, mySnake.getSnakeBody().get(1), head, head, connectingDots);
+				Location cloestFood = findTheCloestFood(foodContainer, mySnake, connectingDots);
 				Move closerToFood = null;
 				int distance = -1;
+				if(cloestFood == null)
+					return goodMove.get(0);
 				for(Move move : goodMove)
 				{
 					int d = getDistance(move.getLocation(), cloestFood);
@@ -237,8 +253,7 @@ public class SuriveSnake extends BattleSnaker {
 //		return null;
 //	}
 
-	// TODO: consider heading and snake positions
-	public Location findTheCloestFood(FoodContainer foodContainer, SnakeInfo mySnakeInfo) {
+	public Location findTheCloestFood(FoodContainer foodContainer, SnakeInfo mySnakeInfo, Set<Location> connectingDots) {
 		// well actually it is distance square but we are comparing so not a problem
 		int distance = 10000000;
 		Location cloestFood = null;
@@ -247,8 +262,8 @@ public class SuriveSnake extends BattleSnaker {
 				for (Location food : foodContainer.getFoodList()) {
 					int xDiff = mySnakeInfo.getHead().getX() - food.getX();
 					int yDiff = mySnakeInfo.getHead().getY() - food.getY();
-					int localDistance = (xDiff * xDiff + yDiff * yDiff);
-					if (distance > localDistance) {
+					int localDistance = Math.abs(xDiff) + Math.abs(yDiff);
+					if (distance > localDistance && connectingDots.contains(food)) {
 						distance = localDistance;
 						cloestFood = food;
 					}

@@ -9,13 +9,22 @@ import org.slf4j.LoggerFactory;
 import com.fasterxml.jackson.databind.JsonNode;
 
 public class SnakeInfo {
-    private static final Logger LOG = LoggerFactory.getLogger(SnakeInfo.class);
+	private static final Logger LOG = LoggerFactory.getLogger(SnakeInfo.class);
 	private String name;
 	private int health;
 	private List<Location> snakeBody;
 	private Location head;
 	private int length;
 	private String heading;
+	private String id;
+
+	public String getId() {
+		return id;
+	}
+
+	public void setId(String id) {
+		this.id = id;
+	}
 
 	public String getName() {
 		return name;
@@ -69,11 +78,11 @@ public class SnakeInfo {
 		snakeBody = new ArrayList<>();
 		try {
 			if (snakeInfo != null) {
+				this.id = snakeInfo.get("id").asText();
 				this.name = snakeInfo.get("name").asText();
 				this.health = snakeInfo.get("health").asInt();
 				for (int i = 0; i < snakeInfo.get("body").size(); i++) {
-					if(snakeInfo.get("body").get(i) != null)
-					{
+					if (snakeInfo.get("body").get(i) != null) {
 						Location bodyItem = new Location();
 						bodyItem.setX(snakeInfo.get("body").get(i).get("x").asInt());
 						bodyItem.setY(snakeInfo.get("body").get(i).get("y").asInt());
@@ -87,36 +96,27 @@ public class SnakeInfo {
 				this.length = snakeInfo.get("length").asInt();
 			}
 		} catch (Exception e) {
-	        LOG.info("processFood error ", e.getMessage());
+			LOG.info("processFood error ", e.getMessage());
 			e.printStackTrace();
 		}
 	}
 
 	private String getHeading(List<Location> snakeBody) {
-		if(snakeBody != null && snakeBody.size() > 2)
-		{
+		if (snakeBody != null && snakeBody.size() > 2) {
 			Location first = snakeBody.get(0);
 			Location second = snakeBody.get(1);
-			if(first.getX() == second.getX())
-			{
-				if(first.getY() > second.getY())
-				{
+			if (first.getX() == second.getX()) {
+				if (first.getY() > second.getY()) {
 					return "up";
-				}
-				else if(first.getY() < second.getY())
-				{
+				} else if (first.getY() < second.getY()) {
 					return "down";
 				}
-			}
-			else if(first.getX() > second.getX())
-			{
+			} else if (first.getX() > second.getX()) {
 				return "right";
-			}
-			else if(first.getX() < second.getX())
-			{
+			} else if (first.getX() < second.getX()) {
 				return "left";
 			}
-				
+
 		}
 		return null;
 	}
@@ -124,13 +124,12 @@ public class SnakeInfo {
 	@Override
 	public String toString() {
 		String snakeBodyStr = "{";
-		for(Location bodyItem : this.snakeBody)
-		{
+		for (Location bodyItem : this.snakeBody) {
 			snakeBodyStr = snakeBodyStr + bodyItem.toString();
 		}
 		snakeBodyStr = snakeBodyStr + "}";
-		return "SnakeInfo [name=" + name + ", health=" + health + ", snakeBody=" + snakeBodyStr + ", head=" + head
-				+ ", length=" + length + ", heading=" + heading + "]";
+		return "SnakeInfo [name=" + name + ", id=" + id + ", health=" + health + ", snakeBody=" + snakeBodyStr
+				+ ", head=" + head + ", length=" + length + ", heading=" + heading + "]";
 	}
-	
+
 }

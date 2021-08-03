@@ -33,7 +33,7 @@ public class Move {
 		this.location = location;
 	}
 
-	public int connectingDots(int boardHeight, int boardWidth, List<SnakeInfo> otherSnakes, SnakeInfo mySnake,
+	public static int connectingDots(int boardHeight, int boardWidth, List<SnakeInfo> otherSnakes, SnakeInfo mySnake,
 			Location from, Location current, Location start, Set<Location> connectedLocation) {
 		int connectionPoints = 0;
 		Location left = new Location(current.getX() - 1, current.getY());
