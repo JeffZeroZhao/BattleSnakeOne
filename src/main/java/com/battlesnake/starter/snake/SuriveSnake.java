@@ -124,9 +124,14 @@ public class SuriveSnake extends BattleSnaker {
 		}
 
 		// ok fine at this point frogot the top bottom rule and give it another try
-		if (validMove.size() == 0 && useTopBottpmRule) {
-			LOG.info("Shit!!! I am trapped!");
-			return getMove(boardHeight, boardWidth, otherSnakes, mySnake, foodContainer, false);
+		if (validMove.size() == 0) {
+			if(useTopBottpmRule)
+				return getMove(boardHeight, boardWidth, otherSnakes, mySnake, foodContainer, false);
+			else 
+			{
+				LOG.info("Shit!!! I am trapped!");
+				return null;
+			}
 		}
 		if (validMove.size() == 1) {
 			return validMove.get(0);
@@ -141,7 +146,8 @@ public class SuriveSnake extends BattleSnaker {
 					goodMove.add(move);
 			}
 			if (safestMove.getConnectedDots() < mySnake.getLength() * 1.5)
-				return getMove(boardHeight, boardWidth, otherSnakes, mySnake, foodContainer, false);
+				if(useTopBottpmRule)
+					return getMove(boardHeight, boardWidth, otherSnakes, mySnake, foodContainer, false);
 			if (goodMove.size() == 0) {
 				return safestMove;
 			} else if (goodMove.size() == 1) {
