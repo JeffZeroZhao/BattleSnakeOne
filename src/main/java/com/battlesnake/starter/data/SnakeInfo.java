@@ -9,38 +9,11 @@ import org.slf4j.LoggerFactory;
 import com.fasterxml.jackson.databind.JsonNode;
 
 public class SnakeInfo {
-	public class BodyItem {
-		private int x;
-		private int y;
-
-		public int getX() {
-			return x;
-		}
-
-		public void setX(int x) {
-			this.x = x;
-		}
-
-		public int getY() {
-			return y;
-		}
-
-		public void setY(int y) {
-			this.y = y;
-		}
-
-		@Override
-		public String toString() {
-			return "BodyItem [x=" + x + ", y=" + y + "]";
-		}
-
-	}
-
     private static final Logger LOG = LoggerFactory.getLogger(SnakeInfo.class);
 	private String name;
 	private int health;
-	private List<BodyItem> snakeBody;
-	private BodyItem head;
+	private List<Location> snakeBody;
+	private Location head;
 	private int length;
 	private String heading;
 
@@ -60,19 +33,19 @@ public class SnakeInfo {
 		this.health = health;
 	}
 
-	public List<BodyItem> getSnakeBody() {
+	public List<Location> getSnakeBody() {
 		return snakeBody;
 	}
 
-	public void setSnakeBody(List<BodyItem> snakeBody) {
+	public void setSnakeBody(List<Location> snakeBody) {
 		this.snakeBody = snakeBody;
 	}
 
-	public BodyItem getHead() {
+	public Location getHead() {
 		return head;
 	}
 
-	public void setHead(BodyItem head) {
+	public void setHead(Location head) {
 		this.head = head;
 	}
 
@@ -101,14 +74,14 @@ public class SnakeInfo {
 				for (int i = 0; i < snakeInfo.get("body").size(); i++) {
 					if(snakeInfo.get("body").get(i) != null)
 					{
-						BodyItem bodyItem = new BodyItem();
+						Location bodyItem = new Location();
 						bodyItem.setX(snakeInfo.get("body").get(i).get("x").asInt());
 						bodyItem.setY(snakeInfo.get("body").get(i).get("y").asInt());
 						snakeBody.add(bodyItem);
 					}
 				}
 				this.heading = getHeading(snakeBody);
-				this.head = new BodyItem();
+				this.head = new Location();
 				this.head.setX(snakeInfo.get("head").get("x").asInt());
 				this.head.setY(snakeInfo.get("head").get("y").asInt());
 				this.length = snakeInfo.get("length").asInt();
@@ -119,27 +92,27 @@ public class SnakeInfo {
 		}
 	}
 
-	private String getHeading(List<BodyItem> snakeBody) {
+	private String getHeading(List<Location> snakeBody) {
 		if(snakeBody != null && snakeBody.size() > 2)
 		{
-			BodyItem first = snakeBody.get(0);
-			BodyItem second = snakeBody.get(1);
-			if(first.x == second.x)
+			Location first = snakeBody.get(0);
+			Location second = snakeBody.get(1);
+			if(first.getX() == second.getX())
 			{
-				if(first.y > second.y)
+				if(first.getY() > second.getY())
 				{
 					return "up";
 				}
-				else if(first.y < second.y)
+				else if(first.getY() < second.getY())
 				{
 					return "down";
 				}
 			}
-			else if(first.x > second.x)
+			else if(first.getX() > second.getX())
 			{
 				return "right";
 			}
-			else if(first.x < second.x)
+			else if(first.getX() < second.getX())
 			{
 				return "left";
 			}
@@ -151,7 +124,7 @@ public class SnakeInfo {
 	@Override
 	public String toString() {
 		String snakeBodyStr = "{";
-		for(BodyItem bodyItem : this.snakeBody)
+		for(Location bodyItem : this.snakeBody)
 		{
 			snakeBodyStr = snakeBodyStr + bodyItem.toString();
 		}

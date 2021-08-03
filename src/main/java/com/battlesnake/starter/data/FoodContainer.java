@@ -9,14 +9,14 @@ import org.slf4j.LoggerFactory;
 import com.fasterxml.jackson.databind.JsonNode;
 
 public class FoodContainer {
-	private List<Food> foodList = null;
+	private List<Location> foodList = null;
     private static final Logger LOG = LoggerFactory.getLogger(FoodContainer.class);
 
-	public List<Food> getFoodList() {
+	public List<Location> getFoodList() {
 		return foodList;
 	}
 
-	public void setFoodList(List<Food> foodList) {
+	public void setFoodList(List<Location> foodList) {
 		this.foodList = foodList;
 	}
 
@@ -26,7 +26,7 @@ public class FoodContainer {
 			if (foods != null) {
 				for (int i = 0; i < foods.size(); i++) {
 					JsonNode item = foods.get(i);
-					Food food = new Food();
+					Location food = new Location();
 					food.setX(item.get("x").asInt());
 					food.setY(item.get("y").asInt());
 					foodList.add(food);
@@ -42,7 +42,7 @@ public class FoodContainer {
 	@Override
 	public String toString() {
 		String foods = "{";
-		for (Food food : foodList) {
+		for (Location food : foodList) {
 			foods = foods + food.toString();
 		}
 		foods = foods + "}";
