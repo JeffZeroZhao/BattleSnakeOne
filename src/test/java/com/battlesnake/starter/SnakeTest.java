@@ -33,7 +33,7 @@ public class SnakeTest {
         
         
         Map<String, String> response = handler.index();
-        assertEquals("#888888", response.get("color"));
+        assertEquals("#ffcc66", response.get("color"));
         assertEquals("default", response.get("headType"));
         assertEquals("default", response.get("tailType"));
     }

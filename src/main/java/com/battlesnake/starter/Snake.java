@@ -106,8 +106,8 @@ public class Snake {
             response.put("apiversion", "1");
             response.put("author", "jzhao");           // TODO: Your Battlesnake Username
             response.put("color", "#ffcc66");     // TODO: Personalize
-            response.put("head", "default");  // TODO: Personalize
-            response.put("tail", "default");  // TODO: Personalize
+            response.put("headType", "default");  // TODO: Personalize
+            response.put("tailType", "default");  // TODO: Personalize
             return response;
         }
 
