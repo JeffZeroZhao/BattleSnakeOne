@@ -158,12 +158,15 @@ public class SuriveSnake extends BattleSnaker {
 			} else {
 				//if a snake head is close to my head, avoid that snake
 				List<SnakeInfo> dangeriousSnakes = new ArrayList<>();
-				for(SnakeInfo s: otherSnakes)
+				if(otherSnakes != null)
 				{
-					if(s != null && (getDistance(s.getHead(), mySnake.getHead()) <= 3))
+					for(SnakeInfo s: otherSnakes)
 					{
-						dangeriousSnakes.add(s);
-					}
+						if(s != null && (getDistance(s.getHead(), mySnake.getHead()) <= 3))
+						{
+							dangeriousSnakes.add(s);
+						}
+					}	
 				}
 				Set<Location> connectingDots = new HashSet<>();
 				Move.connectingDots(boardHeight, boardWidth, otherSnakes, mySnake, mySnake.getSnakeBody().get(1), head,

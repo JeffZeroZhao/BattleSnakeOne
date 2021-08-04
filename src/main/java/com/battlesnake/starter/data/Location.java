@@ -46,7 +46,7 @@ public class Location implements Comparable<Location> {
 			return false;
 		// need more thought
 		// if x not left most and right most line, avoid bottom and top
-		if (topBottomRule && mySnake.getLength() > boardHeight * 2
+		if (topBottomRule && mySnake.getLength() > 5
 				&& (this.x > 0 && this.x < boardWidth && (this.y <= 3 || this.y >= boardHeight - 3)))
 			return false;
 
