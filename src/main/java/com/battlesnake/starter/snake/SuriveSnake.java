@@ -21,12 +21,12 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 public class SuriveSnake extends BattleSnaker {
 	private static final Logger LOG = LoggerFactory.getLogger(SuriveSnake.class);
 	private static final ObjectMapper JSON_MAPPER = new ObjectMapper();
-	private FoodContainer foodContainer = new FoodContainer();
-	private SnakeInfo mySnakeInfo = new SnakeInfo();
-	private List<SnakeInfo> otherSnakes = new ArrayList<>();
 
 	@Override
 	public Map<String, String> move(JsonNode moveRequest) {
+		FoodContainer foodContainer = new FoodContainer();
+		SnakeInfo mySnakeInfo = new SnakeInfo();
+		List<SnakeInfo> otherSnakes = new ArrayList<>();
 
 		try {
 			LOG.info("Data: {}", JSON_MAPPER.writerWithDefaultPrettyPrinter().writeValueAsString(moveRequest));
