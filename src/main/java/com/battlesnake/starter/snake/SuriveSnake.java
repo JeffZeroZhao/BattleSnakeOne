@@ -148,7 +148,7 @@ public class SuriveSnake extends BattleSnaker {
 				if (move.getConnectedDots() >= mySnake.getLength() * 2)
 					goodMove.add(move);
 			}
-			if (safestMove.getConnectedDots() < mySnake.getLength() * 1.5)
+			if (safestMove.getConnectedDots() < mySnake.getLength() * 0.75)
 				if(useTopBottpmRule)
 					return getMove(boardHeight, boardWidth, otherSnakes, mySnake, foodContainer, false);
 			if (goodMove.size() == 0) {
