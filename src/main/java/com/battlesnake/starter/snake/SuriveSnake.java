@@ -156,19 +156,34 @@ public class SuriveSnake extends BattleSnaker {
 			} else if (goodMove.size() == 1) {
 				return goodMove.get(0);
 			} else {
+				//if a snake head is close to my head, avoid that snake
+				List<SnakeInfo> dangeriousSnakes = new ArrayList<>();
+				for(SnakeInfo s: otherSnakes)
+				{
+					if(s != null && (getDistance(s.getHead(), mySnake.getHead()) < 10))
+					{
+						dangeriousSnakes.add(s);
+					}
+				}
 				Set<Location> connectingDots = new HashSet<>();
 				Move.connectingDots(boardHeight, boardWidth, otherSnakes, mySnake, mySnake.getSnakeBody().get(1), head,
 						head, connectingDots, useTopBottpmRule);
 				Location cloestFood = findTheCloestFood(foodContainer, mySnake, connectingDots);
 				Move closerToFood = null;
-				int distance = -1;
+				Integer distance = null;
 				if (cloestFood == null)
 					return goodMove.get(0);
 				for (Move move : goodMove) {
-					int d = getDistance(move.getLocation(), cloestFood);
-					if (distance == -1 || distance > d) {
+					int foodd = getDistance(move.getLocation(), cloestFood);
+					int enermyd = 0;
+					for(SnakeInfo s: dangeriousSnakes)
+					{
+						enermyd = enermyd + getDistance(s.getHead(), move.getLocation());
+					}
+					int totalD = enermyd - foodd;
+					if (distance == null || distance < totalD) {
 						closerToFood = move;
-						distance = d;
+						distance = totalD;
 					}
 				}
 				return closerToFood;
