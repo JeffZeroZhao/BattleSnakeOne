@@ -160,7 +160,7 @@ public class SuriveSnake extends BattleSnaker {
 				List<SnakeInfo> dangeriousSnakes = new ArrayList<>();
 				for(SnakeInfo s: otherSnakes)
 				{
-					if(s != null && (getDistance(s.getHead(), mySnake.getHead()) < 10))
+					if(s != null && (getDistance(s.getHead(), mySnake.getHead()) < 5))
 					{
 						dangeriousSnakes.add(s);
 					}
