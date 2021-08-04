@@ -40,13 +40,14 @@ public class Location implements Comparable<Location> {
 		return result;
 	}
 
-	public boolean isEmpty(int boardHeight, int boardWidth, List<SnakeInfo> otherSnakes, SnakeInfo mySnake, boolean topBottomRule) {
+	public boolean isEmpty(int boardHeight, int boardWidth, List<SnakeInfo> otherSnakes, SnakeInfo mySnake,
+			boolean topBottomRule, boolean checkingNextMove) {
 		if (this.x < 0 || this.x >= boardWidth || this.y < 0 || this.y >= boardHeight)
 			return false;
 		// need more thought
 		// if x not left most and right most line, avoid bottom and top
-		if (topBottomRule && mySnake.getLength() > boardHeight*2 
-				&& (this.x > 0 && this.x < boardWidth && (this.y == 0 || this.y == boardHeight - 1)))
+		if (topBottomRule && mySnake.getLength() > boardHeight * 2
+				&& (this.x > 0 && this.x < boardWidth && (this.y <= 3 || this.y >= boardHeight - 3)))
 			return false;
 
 		if (mySnake.getSnakeBody() != null) {
@@ -59,7 +60,9 @@ public class Location implements Comparable<Location> {
 				for (SnakeInfo otherSnake : otherSnakes) {
 					// last of my body will be removed when I move forward, so skip the last one
 					for (int i = 0; i < otherSnake.getSnakeBody().size() - 1; i++) {
-						if (otherSnake.getSnakeBody().get(i) != null && otherSnake.getSnakeBody().get(i).equals(this))
+						if ((checkingNextMove && otherSnake.getLength() >= mySnake.getLength())
+								&& otherSnake.getSnakeBody().get(i) != null
+								&& otherSnake.getSnakeBody().get(i).equals(this))
 							return false;
 					}
 					// those are other snakes so check the dots directory connect to their head also
