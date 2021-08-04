@@ -134,7 +134,7 @@ public class SuriveSnake extends BattleSnaker {
 			}
 		}
 		if (validMove.size() == 1) {
-			if(useTopBottpmRule && validMove.get(0).getConnectedDots() < boardHeight * 1.5)
+			if(useTopBottpmRule && validMove.get(0).getConnectedDots() < boardHeight * 3)
 				return getMove(boardHeight, boardWidth, otherSnakes, mySnake, foodContainer, false);
 			else
 				return validMove.get(0);
@@ -145,10 +145,10 @@ public class SuriveSnake extends BattleSnaker {
 			for (Move move : validMove) {
 				if (move.getConnectedDots() > safestMove.getConnectedDots())
 					safestMove = move;
-				if (move.getConnectedDots() >= boardHeight * 1.5)
+				if (move.getConnectedDots() >= boardHeight * 3)
 					goodMove.add(move);
 			}
-			if (safestMove.getConnectedDots() < boardHeight * 1.5)
+			if (safestMove.getConnectedDots() < boardHeight * 3)
 				if(useTopBottpmRule)
 					return getMove(boardHeight, boardWidth, otherSnakes, mySnake, foodContainer, false);
 			if (goodMove.size() == 0) {
