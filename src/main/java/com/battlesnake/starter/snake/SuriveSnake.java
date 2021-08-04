@@ -104,22 +104,22 @@ public class SuriveSnake extends BattleSnaker {
 		List<Move> validMove = new ArrayList<>();
 		if (moveUp.getLocation().isEmpty(boardHeight, boardWidth, otherSnakes, mySnake, useTopBottpmRule)) {
 			moveUp.setConnectedDots(Move.connectingDots(boardHeight, boardWidth, otherSnakes, mySnake, head,
-					moveUp.getLocation(), moveUp.getLocation(), new HashSet<>()));
+					moveUp.getLocation(), moveUp.getLocation(), new HashSet<>(), useTopBottpmRule));
 			validMove.add(moveUp);
 		}
 		if (moveDown.getLocation().isEmpty(boardHeight, boardWidth, otherSnakes, mySnake, useTopBottpmRule)) {
 			moveDown.setConnectedDots(Move.connectingDots(boardHeight, boardWidth, otherSnakes, mySnake, head,
-					moveDown.getLocation(), moveDown.getLocation(), new HashSet<>()));
+					moveDown.getLocation(), moveDown.getLocation(), new HashSet<>(), useTopBottpmRule));
 			validMove.add(moveDown);
 		}
 		if (moveRight.getLocation().isEmpty(boardHeight, boardWidth, otherSnakes, mySnake, useTopBottpmRule)) {
 			moveRight.setConnectedDots(Move.connectingDots(boardHeight, boardWidth, otherSnakes, mySnake, head,
-					moveRight.getLocation(), moveRight.getLocation(), new HashSet<>()));
+					moveRight.getLocation(), moveRight.getLocation(), new HashSet<>(), useTopBottpmRule));
 			validMove.add(moveRight);
 		}
 		if (moveLeft.getLocation().isEmpty(boardHeight, boardWidth, otherSnakes, mySnake, useTopBottpmRule)) {
 			moveLeft.setConnectedDots(Move.connectingDots(boardHeight, boardWidth, otherSnakes, mySnake, head,
-					moveLeft.getLocation(), moveLeft.getLocation(), new HashSet<>()));
+					moveLeft.getLocation(), moveLeft.getLocation(), new HashSet<>(), useTopBottpmRule));
 			validMove.add(moveLeft);
 		}
 
@@ -158,7 +158,7 @@ public class SuriveSnake extends BattleSnaker {
 			} else {
 				Set<Location> connectingDots = new HashSet<>();
 				Move.connectingDots(boardHeight, boardWidth, otherSnakes, mySnake, mySnake.getSnakeBody().get(1), head,
-						head, connectingDots);
+						head, connectingDots, useTopBottpmRule);
 				Location cloestFood = findTheCloestFood(foodContainer, mySnake, connectingDots);
 				Move closerToFood = null;
 				int distance = -1;
