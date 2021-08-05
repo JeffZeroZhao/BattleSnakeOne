@@ -6,6 +6,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.TreeSet;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -118,6 +119,7 @@ public class SuriveSnake extends BattleSnaker {
 			validMove.add(moveRight);
 		}
 		if (moveLeft.getLocation().isEmpty(boardHeight, boardWidth, otherSnakes, mySnake, useTopBottpmRule, true)) {
+//			Set<Location> store = new TreeSet<>();
 			moveLeft.setConnectedDots(Move.connectingDots(boardHeight, boardWidth, otherSnakes, mySnake, head,
 					moveLeft.getLocation(), moveLeft.getLocation(), new HashSet<>(), useTopBottpmRule));
 			validMove.add(moveLeft);
@@ -133,8 +135,9 @@ public class SuriveSnake extends BattleSnaker {
 				return null;
 			}
 		}
-		if (validMove.size() == 1) {
-			if(useTopBottpmRule && validMove.get(0).getConnectedDots() < boardHeight * 3)
+		if (validMove.size() == 1 && useTopBottpmRule) {
+			int thr = (boardHeight - 6) * 3;
+			if(useTopBottpmRule && validMove.get(0).getConnectedDots() < thr)
 				return getMove(boardHeight, boardWidth, otherSnakes, mySnake, foodContainer, false);
 			else
 				return validMove.get(0);
