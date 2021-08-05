@@ -58,7 +58,7 @@ public class SuriveSnake extends BattleSnaker {
 			}
 		}
 
-		Move move = getMove(boardHeight, boardWidth, otherSnakes, mySnakeInfo, foodContainer, (true && mySnakeInfo.getHealth() < 30));
+		Move move = getMove(boardHeight, boardWidth, otherSnakes, mySnakeInfo, foodContainer, (true && mySnakeInfo.getHealth() > 30));
 
 		Map<String, String> response = new HashMap<>();
 		if (move != null)
