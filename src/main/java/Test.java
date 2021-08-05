@@ -45,15 +45,17 @@ public class Test {
 
 		mySnake = new SnakeInfo();
 		snakeBody = new ArrayList<>();
-		snakeBody.add(new Location(7, 9));
-		snakeBody.add(new Location(7, 8));
-		snakeBody.add(new Location(7, 7));
-		snakeBody.add(new Location(7, 6));
+		snakeBody.add(new Location(9, 1));
+		snakeBody.add(new Location(9, 2));
+		snakeBody.add(new Location(9, 3));
+		snakeBody.add(new Location(9, 4));
+		snakeBody.add(new Location(9, 5));
+		snakeBody.add(new Location(8, 5));
 		snakeBody.add(new Location(7, 5));
-		snakeBody.add(new Location(7, 4));
+		snakeBody.add(new Location(7, 6));
+		snakeBody.add(new Location(7, 7));
+		snakeBody.add(new Location(6, 7));
 		snakeBody.add(new Location(6, 4));
-		snakeBody.add(new Location(5, 4));
-		snakeBody.add(new Location(4, 4));
 		mySnake.setSnakeBody(snakeBody);
 		mySnake.setHead(new Location(snakeBody.get(0).getX(), snakeBody.get(0).getY()));
 //		mySnake.setHeading("up");
@@ -97,8 +99,8 @@ public class Test {
 		SuriveSnake sn = new SuriveSnake();
 		FoodContainer fc = new FoodContainer();
 		fc.setFoodList(new ArrayList<Location>());
-		fc.getFoodList().add(new Location(0, 9));
-		fc.getFoodList().add(new Location(7, 8));
+		fc.getFoodList().add(new Location(2, 2));
+		fc.getFoodList().add(new Location(10, 5));
 //		Set<Location> connectingDots = new TreeSet<>();
 //		Move.connectingDots(6, 6, null, mySnake, mySnake.getSnakeBody().get(1), mySnake.getSnakeBody().get(0), mySnake.getSnakeBody().get(0), connectingDots, true);
 //		System.out.println(connectingDots);
