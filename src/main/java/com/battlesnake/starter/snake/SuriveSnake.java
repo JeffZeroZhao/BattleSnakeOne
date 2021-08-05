@@ -136,7 +136,7 @@ public class SuriveSnake extends BattleSnaker {
 			}
 		}
 		if (validMove.size() == 1 && useTopBottpmRule) {
-			int thr = (boardHeight - 6) * 3;
+			int thr = (boardHeight - 2) * 3;
 			if(useTopBottpmRule && validMove.get(0).getConnectedDots() < thr)
 				return getMove(boardHeight, boardWidth, otherSnakes, mySnake, foodContainer, false);
 			else

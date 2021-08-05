@@ -45,6 +45,8 @@ public class Test {
 
 		mySnake = new SnakeInfo();
 		snakeBody = new ArrayList<>();
+		snakeBody.add(new Location(7, 9));
+		snakeBody.add(new Location(7, 8));
 		snakeBody.add(new Location(7, 7));
 		snakeBody.add(new Location(7, 6));
 		snakeBody.add(new Location(7, 5));
